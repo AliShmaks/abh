@@ -73,7 +73,7 @@ textarea {
   font-family: inherit;
 }
 
-/* ---------- Images: no drag, no long-press menu ---------- */
+/* ---------- Images ---------- */
 img {
   display: block;
   max-width: 100%;
@@ -88,7 +88,7 @@ img {
   color: #000;
 }
 
-/* ---------- Container & Section ---------- */
+/* ---------- Layout ---------- */
 .container {
   width: 100%;
   max-width: 1200px;
@@ -194,14 +194,16 @@ img {
   box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.15);
 }
 
-/* ---------- Category grid ---------- */
+/* ========================================================== */
+/* ---------- CATEGORY ---------- */
+/* ========================================================== */
+
 .category-grid {
   display: grid;
   gap: 28px;
   grid-template-columns: repeat(4, 1fr);
 }
 
-/* ---------- Category card ---------- */
 .category-card {
   display: block;
 }
@@ -310,7 +312,10 @@ img {
   transform: translateX(6px);
 }
 
-/* ---------- Product card ---------- */
+/* ========================================================== */
+/* ---------- PRODUCT CARD ---------- */
+/* ========================================================== */
+
 .product-card {
   display: flex;
   flex-direction: column;
@@ -432,7 +437,7 @@ img {
   align-items: stretch;
 }
 
-/* ---------- Product scroll row ---------- */
+/* ---------- Product scroll row (horizontal on mobile) ---------- */
 .product-scroll-row {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -476,7 +481,10 @@ img {
   scrollbar-width: none;
 }
 
-/* ---------- Cart ---------- */
+/* ========================================================== */
+/* ---------- CART ---------- */
+/* ========================================================== */
+
 .cart-layout {
   display: grid;
   grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
@@ -710,7 +718,10 @@ img {
   display: none;
 }
 
-/* ---------- Product modal ---------- */
+/* ========================================================== */
+/* ---------- PRODUCT MODAL ---------- */
+/* ========================================================== */
+
 .product-modal {
   position: relative;
   width: 100%;
@@ -848,6 +859,35 @@ img {
 }
 
 /* ========================================================== */
+/* ---------- FLOATING WHATSAPP BUTTON ---------- */
+/* ========================================================== */
+
+.whatsapp-float {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 999;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #25d366;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px -4px rgba(37, 211, 102, 0.5),
+    0 4px 12px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+  text-decoration: none;
+}
+
+.whatsapp-float:hover {
+  box-shadow: 0 12px 32px -4px rgba(37, 211, 102, 0.7),
+    0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* ========================================================== */
 /* ---------- RESPONSIVE ---------- */
 /* ========================================================== */
 
@@ -922,6 +962,7 @@ img {
     font-size: 16px;
   }
 
+  /* Horizontal product scroll (Best Sellers / New Arrivals) */
   .product-scroll-row {
     display: flex;
     gap: 14px;
@@ -929,7 +970,7 @@ img {
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     padding: 4px 20px 20px;
-    margin: 0 -20px;
+    margin: 0;
     scrollbar-width: none;
     touch-action: pan-x pan-y;
   }
@@ -954,10 +995,6 @@ img {
   }
 }
 
-/* ========================================================== */
-/* ---------- PHONE: BIGGER TEXT ---------- */
-/* ========================================================== */
-
 @media (max-width: 640px) {
   /* Base body text */
   body {
@@ -979,13 +1016,12 @@ img {
     margin-bottom: 16px;
   }
 
-  /* Buttons */
   .btn {
     font-size: 16px;
     padding: 15px 30px;
   }
 
-  /* Cart */
+  /* ---------- Cart ---------- */
   .cart-item {
     padding: 14px;
     gap: 14px;
@@ -1045,7 +1081,7 @@ img {
     font-size: 20px;
   }
 
-  /* Mobile checkout bar */
+  /* ---------- Mobile checkout bar ---------- */
   .mobile-checkout {
     display: block;
     position: fixed;
@@ -1068,7 +1104,7 @@ img {
     margin: 0 auto;
   }
 
-  /* Categories */
+  /* ---------- Categories ---------- */
   .category-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 24px 12px;
@@ -1099,7 +1135,7 @@ img {
     display: none;
   }
 
-  /* Product grid */
+  /* ---------- Product grid ---------- */
   .product-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 14px;
@@ -1113,11 +1149,11 @@ img {
     flex-direction: column;
     align-items: flex-start;
     gap: 6px;
-    min-height: 60px;
+    min-height: 68px;
   }
 
   .product-name {
-    font-size: 15px;
+    font-size: 18px;
     font-weight: 600;
     line-height: 1.3;
     display: -webkit-box;
@@ -1130,18 +1166,26 @@ img {
   }
 
   .product-price {
-    font-size: 16px;
+    font-size: 19px;
     font-weight: 700;
   }
 
   .product-add-btn {
-    padding: 12px 14px;
-    font-size: 14px;
+    padding: 13px 14px;
+    font-size: 15px;
   }
 
   .product-tag {
     font-size: 11px;
     padding: 6px 11px;
+  }
+
+  /* ---------- WhatsApp button ---------- */
+  .whatsapp-float {
+    width: 52px;
+    height: 52px;
+    right: 16px;
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
   }
 }
 
@@ -1200,41 +1244,5 @@ img {
   .product-scroll-row {
     touch-action: pan-x pan-y;
     -webkit-overflow-scrolling: touch;
-  }
-}
-
-/* ---------- Floating WhatsApp button (right) ---------- */
-.whatsapp-float {
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  z-index: 999;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: #25d366;
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 8px 24px -4px rgba(37, 211, 102, 0.5),
-    0 4px 12px rgba(0, 0, 0, 0.15);
-  cursor: pointer;
-  transition: box-shadow 0.3s ease, transform 0.2s ease;
-  text-decoration: none;
-}
-
-.whatsapp-float:hover {
-  box-shadow: 0 12px 32px -4px rgba(37, 211, 102, 0.7),
-    0 6px 16px rgba(0, 0, 0, 0.2);
-}
-
-/* Phone: slightly smaller + safe area */
-@media (max-width: 640px) {
-  .whatsapp-float {
-    width: 52px;
-    height: 52px;
-    right: 16px;
-    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
   }
 }

@@ -2,13 +2,14 @@ import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import Logo from './Logo'
+import { siteData } from '../data/siteData'
 
 const SESSION_KEY = 'abh_loader_shown'
 
 export default function Loader() {
   const location = useLocation()
 
-  // First visit plays full 2s. Afterwards, short 0.8s on every nav.
+  // First visit plays full 2s. Afterwards, short 0.8s on category navigation.
   const [showFull, setShowFull] = useState(() => {
     if (typeof window === 'undefined') return false
     return !sessionStorage.getItem(SESSION_KEY)
@@ -16,7 +17,6 @@ export default function Loader() {
   const [showQuick, setShowQuick] = useState(false)
 
   const timerRef = useRef(null)
-  const lastPathRef = useRef(location.pathname)
 
   function startQuickLoader() {
     setShowQuick(true)
@@ -46,25 +46,36 @@ export default function Loader() {
     if (!showFull) document.body.style.overflow = ''
   }, [showFull])
 
-  // ----- Quick (0.8s) on any link click -----
+  // ----- Quick (0.8s) on LINK CLICKS ONLY -----
   useEffect(() => {
     function handleClick(e) {
       if (showFull) return
       if (!sessionStorage.getItem(SESSION_KEY)) return
 
+      // Find the closest anchor/link element
       const link = e.target.closest('a')
       if (!link) return
 
       const href = link.getAttribute('href')
       if (!href) return
 
+      // Only internal links
       const isInternal =
         href.startsWith('/') &&
         !href.startsWith('//') &&
         link.target !== '_blank'
 
       if (!isInternal) return
+
+      // Skip if clicking a link to the same path
       if (href === location.pathname) return
+
+      // Skip if it's a filter/dropdown change — those URLs contain more than 2 segments
+      // OR if the base path is the same (e.g. /covers → /covers/iphone)
+      const currentBase = '/' + location.pathname.split('/')[1]
+      const targetBase = '/' + href.split('/')[1]
+
+      if (currentBase === targetBase) return // same section → no loader
 
       startQuickLoader()
     }
@@ -72,16 +83,6 @@ export default function Loader() {
     document.addEventListener('click', handleClick, true)
     return () => document.removeEventListener('click', handleClick, true)
   }, [showFull, location.pathname])
-
-  // ----- Quick (0.8s) on route change (back/forward also) -----
-  useEffect(() => {
-    if (showFull) return
-    if (!sessionStorage.getItem(SESSION_KEY)) return
-    if (lastPathRef.current === location.pathname) return
-
-    lastPathRef.current = location.pathname
-    startQuickLoader()
-  }, [location.pathname, showFull])
 
   const show = showFull || showQuick
   const duration = showFull ? 2000 : 800
@@ -107,7 +108,6 @@ export default function Loader() {
             gap: 24,
           }}
         >
-          {/* Glow */}
           <motion.div
             initial={{ opacity: 0, scale: 0.6 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -123,7 +123,6 @@ export default function Loader() {
             }}
           />
 
-          {/* Logo */}
           <motion.div
             initial={{ opacity: 0, scale: 0.7 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -142,7 +141,6 @@ export default function Loader() {
             </motion.div>
           </motion.div>
 
-          {/* Brand name */}
           <motion.span
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -159,10 +157,9 @@ export default function Loader() {
               color: '#ffffff',
             }}
           >
-            ABH
+            {siteData.brand.name}
           </motion.span>
 
-          {/* Progress bar */}
           <div
             style={{
               position: 'absolute',
@@ -170,7 +167,7 @@ export default function Loader() {
               width: showFull ? 180 : 140,
               height: 2,
               borderRadius: 999,
-              background: 'rgba(255,255,255,0.1)',
+              background: 'rgba(255,255,255,0.15)',
               overflow: 'hidden',
             }}
           >
